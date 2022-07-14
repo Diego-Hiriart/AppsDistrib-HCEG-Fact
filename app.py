@@ -10,7 +10,6 @@ def createPost():
     if(content_type == 'application/json'):
         jsonReq = request.json
         invRequest = InvoiceRequest(int(jsonReq["customerId"]), list(jsonReq["products"]), int(jsonReq["paymentMethodId"]))
-        print(invRequest.products)
         #invoice = Invoice(jsonInv["invoiceId"], jsonInv["customerId"], jsonInv["orderId"], jsonInv["subtotal"], jsonInv["tax"], jsonInv["total"], jsonInv["paymentMethodId"])
         return Response(status=200, content_type=('application/json'), response=json.dumps(invRequest.__dict__))
     else:
