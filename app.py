@@ -1,10 +1,11 @@
-import json
 from flask import Flask, request, json, jsonify, Response
+from flask_cors import CORS
 from hcegInvoiceClasses import *
 from datetime import datetime
 import requests
 
 app = Flask(__name__)#Get currentt module name (what is running now)
+CORS(app, resources={r"/api/invoice": {"origins": ["http://localhost:3001", "https://hceg-gui.azurewebsites.net", "127.0.0.1"]}})
 
 iva = 0.12
 
