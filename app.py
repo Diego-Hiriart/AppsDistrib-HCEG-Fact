@@ -3,6 +3,7 @@ from flask_cors import CORS
 from hcegInvoiceClasses import *
 from datetime import datetime
 import requests
+import json
 
 app = Flask(__name__)#Get currentt module name (what is running now)
 CORS(app, resources={r"/api/invoice": {"origins": ["http://localhost:3001", "https://hceg-gui.azurewebsites.net", "127.0.0.1"]}})
@@ -43,11 +44,11 @@ def createPost():
                     invoice = Invoice(0, invRequest.customerId, latestOrder["orderId"], subtotal, tax, total, invRequest.paymentMehtodId)
                     invPostRequest = requests.post("https://hceg-dbapi.azurewebsites.net/api/invoices", data=jsonify(invoice.serialize()).data, headers={'Content-type': 'application/json'})
                     if invPostRequest.status_code == 200:
-                        return Response(status=200, content_type='application/json', response=str(invPostRequest.json()))
+                        return Response(status=200, content_type='application/json', response=json.dumps(invPostRequest.json()))
                     else:
                         return Response("Invoice could not be created {0}".format(str(invPostRequest.content)), status=500)
             else:
-                return Response("Order could not be created {0}".format(str(orderPostReq.content)), status=500,)
+                return Response("Order could not be created {0}".format(str(orderPostReq.content)), status=500)
         else:
             return Response('Content-Type not supported', status=415)
     except Exception as excp:
